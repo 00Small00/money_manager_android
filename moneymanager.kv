@@ -1,0 +1,118 @@
+#:import IconLeftWidget kivymd.uix.list.IconLeftWidget
+#:import images_path kivymd.images_path
+
+
+<ContentNavigationDrawer>
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        FloatLayout:
+            size_hint_y: None
+            height: "200dp"
+
+            canvas:
+                Color:
+                    rgba: app.theme_cls.primary_color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            BoxLayout:
+                id: top_box
+                size_hint_y: None
+                height: "200dp"
+                x: root.parent.x
+                pos_hint: {"top": 1}
+
+
+
+            MDIconButton:
+                icon: "close"
+                x: root.parent.x + dp(10)
+                pos_hint: {"top": 1}
+                on_release: root.parent.toggle_nav_drawer()
+
+            MDLabel:
+                markup: True
+                text: "[b]KivyMD[/b]\\nVersion: 0.102.1"
+                #pos_hint: {'center_y': .5}
+                x: root.parent.x + dp(10)
+                y: root.height - top_box.height + dp(10)
+                size_hint_y: None
+                height: self.texture_size[1]
+
+        ScrollView:
+            pos_hint: {"top": 1}
+
+            GridLayout:
+                id: box_item
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                OneLineListItem:
+                    text: "Day"
+                    divider: None
+                    on_release: 
+                        root.testrealise()
+                        root.parent.toggle_nav_drawer()
+                OneLineListItem:
+                    text: "Month"
+                    divider: None
+                OneLineListItem:
+                    text: "Year"
+                    divider: None
+
+
+Screen:
+
+    NavigationLayout:
+
+        ScreenManager:
+
+            Screen:
+
+                BoxLayout:
+                    orientation: 'vertical'
+
+                    MDToolbar:
+                        title: "Money manager"
+                        md_bg_color: app.theme_cls.primary_color
+                        elevation: 10
+                        left_action_items: [['menu', lambda x: nav_drawer.toggle_nav_drawer()]]
+
+                    BoxLayout:
+                        orientation: 'vertical'
+                        size_hint: 1,1
+                        GridLayout:
+                            cols:2
+                            MDLabel:
+                                text: 'Waste: 0'
+                                halign:'center'
+                            MDLabel:
+                                text: 'Money: 0'
+                                halign:'center'
+                        MDLabel:
+                            text: 'Balance: 0'
+                            halign:'center'
+                        BoxLayout:
+                            MDRaisedButton:
+                                size_hint_x: .5
+                                text: "MDRaisedButton"
+                                elevation_normal: 2
+                                opposite_colors: True
+                                pos_hint: {"center_x": .5}
+                            MDRaisedButton:
+                                size_hint_x: .5
+                                text: "MDRaisedButton"
+                                elevation_normal: 2
+                                opposite_colors: True
+                                pos_hint: {"center_x": .5}
+                        
+
+
+        MDNavigationDrawer:
+            id: nav_drawer
+
+            ContentNavigationDrawer:
+                id: content_drawer
