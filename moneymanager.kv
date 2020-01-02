@@ -1,118 +1,108 @@
-#:import IconLeftWidget kivymd.uix.list.IconLeftWidget
-#:import images_path kivymd.images_path
-
-
-<ContentNavigationDrawer>
-
+<MainScreen>:
+    incomes: income
     BoxLayout:
         orientation: 'vertical'
 
-        FloatLayout:
-            size_hint_y: None
-            height: "200dp"
+        MDToolbar:
+            title: "Money manager"
+            md_bg_color: app.theme_cls.primary_color
+            right_action_items: [['settings', lambda x: root.open_settings()]]
 
-            canvas:
-                Color:
-                    rgba: app.theme_cls.primary_color
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
+        BoxLayout:
+
+            orientation: 'vertical'
+            size_hint: 1,1
 
             BoxLayout:
-                id: top_box
-                size_hint_y: None
-                height: "200dp"
-                x: root.parent.x
-                pos_hint: {"top": 1}
-
-
-
-            MDIconButton:
-                icon: "close"
-                x: root.parent.x + dp(10)
-                pos_hint: {"top": 1}
-                on_release: root.parent.toggle_nav_drawer()
-
-            MDLabel:
-                markup: True
-                text: "[b]KivyMD[/b]\\nVersion: 0.102.1"
-                #pos_hint: {'center_y': .5}
-                x: root.parent.x + dp(10)
-                y: root.height - top_box.height + dp(10)
-                size_hint_y: None
-                height: self.texture_size[1]
-
-        ScrollView:
-            pos_hint: {"top": 1}
+                padding: 20,20,20,0
+                spacing: 20
+                MDRaisedButton:
+                    size_hint: .1,.33
+                    text: "Day"
+                    elevation_normal: 2
+                    opposite_colors: True
+                    pos_hint: {"top": 1}
+                MDRaisedButton:
+                    size_hint: .1,.33
+                    text: "Month"
+                    elevation_normal: 2
+                    opposite_colors: True
+                    pos_hint: {"top": 1}
+                MDRaisedButton:
+                    size_hint: .1,.33
+                    text: "Year"
+                    elevation_normal: 2
+                    opposite_colors: True
+                    pos_hint: {"top": 1}
 
             GridLayout:
-                id: box_item
-                cols: 1
-                size_hint_y: None
-                height: self.minimum_height
-                OneLineListItem:
-                    text: "Day"
-                    divider: None
-                    on_release: 
-                        root.testrealise()
-                        root.parent.toggle_nav_drawer()
-                OneLineListItem:
-                    text: "Month"
-                    divider: None
-                OneLineListItem:
-                    text: "Year"
-                    divider: None
+                cols:2
 
+                MDLabel:
+                    text: 'Expense: 0'
+                    halign:'center'
 
-Screen:
+                MDLabel:
+                    id: income
+                    text: 'Income: 0'
+                    halign:'center'
 
-    NavigationLayout:
+            MDLabel:
+                text: 'Balance: 0'
+                halign:'center'
 
-        ScreenManager:
+            BoxLayout:
+                padding: 20,0,20,20
+                spacing: 20
+                MDRaisedButton:
+                    size_hint: .9,.5
+                    text: "Expense"
+                    elevation_normal: 2
+                    opposite_colors: True
+                    pos_hint: {"center_x": .5}
+                    on_press:
+                        root.manager.transition.direction = 'up'
+                        root.manager.transition.duration = .3
+                        root.manager.current = 'info_screen'
+                MDRaisedButton:
+                    size_hint: .9,.5
+                    text: "Income"
+                    elevation_normal: 2
+                    opposite_colors: True
+                    pos_hint: {"center_x": .5}
+                    on_press:
+                        root.add_m()
+                    
 
-            Screen:
+<InfoScreen>:
+    BoxLayout:
+    MDRaisedButton:
+        size_hint: .1,.33
+        text: "Info"
+        elevation_normal: 2
+        opposite_colors: True
+        pos_hint: {"top": 1}
+        on_press:
+            root.manager.transition.direction = 'down'
+            root.manager.transition.duration = .3
+            root.manager.current = 'main_screen'
+<SettingsScreen>:
+    BoxLayout:
+    MDRaisedButton:
+        size_hint: .1,.33
+        text: "Settings"
+        elevation_normal: 2
+        opposite_colors: True
+        pos_hint: {"top": 1}
+        on_press:
+            root.manager.transition.direction = 'right'
+            root.manager.transition.duration = .3
+            root.manager.current = 'main_screen'
 
-                BoxLayout:
-                    orientation: 'vertical'
-
-                    MDToolbar:
-                        title: "Money manager"
-                        md_bg_color: app.theme_cls.primary_color
-                        elevation: 10
-                        left_action_items: [['menu', lambda x: nav_drawer.toggle_nav_drawer()]]
-
-                    BoxLayout:
-                        orientation: 'vertical'
-                        size_hint: 1,1
-                        GridLayout:
-                            cols:2
-                            MDLabel:
-                                text: 'Waste: 0'
-                                halign:'center'
-                            MDLabel:
-                                text: 'Money: 0'
-                                halign:'center'
-                        MDLabel:
-                            text: 'Balance: 0'
-                            halign:'center'
-                        BoxLayout:
-                            MDRaisedButton:
-                                size_hint_x: .5
-                                text: "MDRaisedButton"
-                                elevation_normal: 2
-                                opposite_colors: True
-                                pos_hint: {"center_x": .5}
-                            MDRaisedButton:
-                                size_hint_x: .5
-                                text: "MDRaisedButton"
-                                elevation_normal: 2
-                                opposite_colors: True
-                                pos_hint: {"center_x": .5}
-                        
-
-
-        MDNavigationDrawer:
-            id: nav_drawer
-
-            ContentNavigationDrawer:
-                id: content_drawer
+ScreenManager:
+    MainScreen:
+        name: 'main_screen'
+    InfoScreen:
+        name: 'info_screen' 
+    SettingsScreen:
+        name: 'settings_screen'

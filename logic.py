@@ -77,9 +77,9 @@ class DataManipulateConsole:
         return text
 
 
-class MoneyManager:
+class MoneyManagerAppManager:
 
-    def __init__(self, database_name='default', database=DataBaseTinyDB, data_manipulate_method=DataManipulateConsole):
+    def __init__(self, database_name='default', database=DataBaseTinyDB, data_manipulate_method=None):
         self._database = database(database_name)
         self._data_manipulate_method = data_manipulate_method
 
