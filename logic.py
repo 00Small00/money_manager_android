@@ -1,5 +1,12 @@
+from kivy.utils import platform
 import datetime
 import tinydb
+import os
+android_path = '/storage/emulated/0/Android/data/'
+path_exist = os.path.isdir(android_path + 'com.moneymanager')
+if platform == 'android':
+    if path_exist == False:
+        os.mkdir(android_path + 'com.moneymanager')
 
 
 class DataBaseTinyDB:
@@ -8,7 +15,13 @@ class DataBaseTinyDB:
     dbQuery = tinydb.Query()
 
     def __init__(self, name):
-        self.db = tinydb.TinyDB(name + '.json')
+
+        if platform == 'android':
+            self.db = tinydb.TinyDB(
+                '/storage/emulated/0/Android/data/com.moneymanager/' + name + '.json')
+        else:
+            self.db = tinydb.TinyDB(name + '.json')
+
         if self.db.all() != []:
             self.current_money = [i['current_money']
                                   for i in self.db.all()][-1]
@@ -146,7 +159,8 @@ def show_day_data_test(App):
 
 
 def main():
-    App = MoneyManager()
+    App = MoneyManagerAppManager(
+        database_name='test', data_manipulate_method=DataManipulateConsole)
     all_d = [i for i in App.database.db.all()]
     # add_waste_test(App)
     # add_money_test(App)
@@ -164,3 +178,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # pass

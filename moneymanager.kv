@@ -1,11 +1,28 @@
+<MainBt@MDRaisedButton>:
+    elevation_normal: 2
+    opposite_colors: True
+    size_hint: .9,.5
+    pos_hint: {"center_x": .5}
+
+<UpMainBt@MDRaisedButton>
+    size_hint: .1,.33
+    elevation_normal: 2
+    opposite_colors: True
+    pos_hint: {"top": 1}
+
+<MyToolBar@MDToolbar>
+    md_bg_color: app.theme_cls.primary_color
+
 <MainScreen>:
-    incomes: income
+    income: income
+    expense: expense
+    balance: balance
+
     BoxLayout:
         orientation: 'vertical'
 
-        MDToolbar:
+        MyToolBar:
             title: "Money manager"
-            md_bg_color: app.theme_cls.primary_color
             right_action_items: [['settings', lambda x: root.open_settings()]]
 
         BoxLayout:
@@ -16,93 +33,222 @@
             BoxLayout:
                 padding: 20,20,20,0
                 spacing: 20
-                MDRaisedButton:
-                    size_hint: .1,.33
+
+                UpMainBt:
                     text: "Day"
-                    elevation_normal: 2
-                    opposite_colors: True
-                    pos_hint: {"top": 1}
-                MDRaisedButton:
-                    size_hint: .1,.33
+
+                UpMainBt:
                     text: "Month"
-                    elevation_normal: 2
-                    opposite_colors: True
-                    pos_hint: {"top": 1}
-                MDRaisedButton:
-                    size_hint: .1,.33
+
+                UpMainBt:
                     text: "Year"
-                    elevation_normal: 2
-                    opposite_colors: True
-                    pos_hint: {"top": 1}
 
             GridLayout:
                 cols:2
 
                 MDLabel:
-                    text: 'Expense: 0'
+                    id: expense
+                    text: ''
                     halign:'center'
 
                 MDLabel:
                     id: income
-                    text: 'Income: 0'
+                    text: ''
                     halign:'center'
 
-            MDLabel:
-                text: 'Balance: 0'
-                halign:'center'
-
             BoxLayout:
-                padding: 20,0,20,20
-                spacing: 20
-                MDRaisedButton:
-                    size_hint: .9,.5
-                    text: "Expense"
-                    elevation_normal: 2
-                    opposite_colors: True
-                    pos_hint: {"center_x": .5}
+                orientation: 'vertical'
+
+                MDLabel:
+                    id: balance
+                    text: ''
+                    halign:'center'
+
+                MainBt:
+                    text: "Full info"
                     on_press:
                         root.manager.transition.direction = 'up'
                         root.manager.transition.duration = .3
                         root.manager.current = 'info_screen'
-                MDRaisedButton:
-                    size_hint: .9,.5
-                    text: "Income"
-                    elevation_normal: 2
-                    opposite_colors: True
-                    pos_hint: {"center_x": .5}
-                    on_press:
-                        root.add_m()
-                    
 
+            BoxLayout:
+                padding: 20,0,20,20
+                spacing: 20
+
+                MainBt:
+                    text: "Expense"
+                    on_press:
+                        root.manager.transition.direction = 'up'
+                        root.manager.transition.duration = .3
+                        root.manager.current = 'expense_screen'
+
+                MainBt:
+                    text: "Income"
+                    on_press:
+                        root.manager.transition.direction = 'up'
+                        root.manager.transition.duration = .3
+                        root.manager.current = 'income_screen'
+<InfoItems>:
+    md_bg_color: app.theme_cls.primary_color
+    canvas.before:
+        Color:
+            rgba: .1, .1, .1, 1
+        Line:
+            width: 1
+            rectangle: self.x-10, self.y, self.width+20, self.height
 <InfoScreen>:
+    scroll: scroll
+
     BoxLayout:
-    MDRaisedButton:
-        size_hint: .1,.33
-        text: "Info"
-        elevation_normal: 2
-        opposite_colors: True
-        pos_hint: {"top": 1}
-        on_press:
-            root.manager.transition.direction = 'down'
-            root.manager.transition.duration = .3
-            root.manager.current = 'main_screen'
+        orientation: 'vertical'
+
+        MyToolBar:
+            title: "Full info"
+            right_action_items: [['keyboard-backspace', lambda x: root.back_to_main_menu()]]
+
+        ScrollView:
+            
+            BoxLayout:
+                padding: 15,15,15,15
+                id: scroll
+                size_hint_y: None
+                height: sum(x.height * 1.5 for x in self.children)
+                orientation: 'vertical'
+
 <SettingsScreen>:
+
     BoxLayout:
-    MDRaisedButton:
-        size_hint: .1,.33
-        text: "Settings"
-        elevation_normal: 2
-        opposite_colors: True
-        pos_hint: {"top": 1}
-        on_press:
-            root.manager.transition.direction = 'right'
-            root.manager.transition.duration = .3
-            root.manager.current = 'main_screen'
+        orientation: 'vertical'
+
+        MyToolBar:
+            title: "Settings"
+            right_action_items: [['keyboard-backspace', lambda x: root.back_to_main_menu()]]
+
+        BoxLayout:
+
+            MDLabel:
+                text: 'pass'
+                halign:'center'
+
+<IncomeScreen>:
+    text_input_sum: text_input_sum
+    text_input_description: text_input_description
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        MyToolBar:
+            title: "Income"
+            right_action_items: [['keyboard-backspace', lambda x: root.back_to_main_menu()]]
+
+        BoxLayout:
+            padding: 20,20,20,20
+            spacing: 20
+            orientation: 'vertical'
+
+            BoxLayout:
+                size_hint_y: .7
+                orientation: 'vertical'
+
+                MDLabel:
+                    size_hint_y: .1
+                    text: 'Enter income sum:'
+                    halign:'center'
+
+                MDTextField:
+                    id: text_input_sum
+                    hint_text: "Enter income"
+                    helper_text_mode: "persistent"
+                    input_type: 'number'
+                    input_filter: 'int'
+
+                MDLabel:
+                    size_hint_y: .1
+                    text: 'Enter description:'
+                    halign:'center'
+
+                MDTextField:
+                    id: text_input_description
+                    hint_text: "Enter description"
+                    helper_text_mode: "persistent"
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: .3
+                    padding: 0,0,0,30
+
+                    MainBt:
+                        size_hint: .5,0
+                        text: "Income"
+                        on_press:
+                            root.add_m()
+
+<ExpenseScreen>:
+    text_input_sum: text_input_sum
+    text_input_description: text_input_description
+
+    BoxLayout:
+        orientation: 'vertical'
+
+        MyToolBar:
+            title: "Expense"
+            right_action_items: [['keyboard-backspace', lambda x: root.back_to_main_menu()]]
+
+        BoxLayout:
+            padding: 20,20,20,20
+            spacing: 20
+            orientation: 'vertical'
+
+            BoxLayout:
+                size_hint_y: .7
+                orientation: 'vertical'
+
+                MDLabel:
+                    size_hint_y: .1
+                    text: 'Enter expense sum:'
+                    halign:'center'
+
+                MDTextField:
+                    id: text_input_sum
+                    hint_text: "Enter expense"
+                    helper_text_mode: "persistent"
+                    input_type: 'number'
+                    input_filter: 'int'
+
+                MDLabel:
+                    size_hint_y: .1
+                    text: 'Enter description:'
+                    halign:'center'
+
+                MDTextField:
+                    id: text_input_description 
+                    hint_text: "Enter description"
+                    helper_text_mode: "persistent"
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    size_hint_y: .3
+                    padding: 0,0,0,30
+
+                    MainBt:
+                        size_hint: .5,0
+                        text: "Expense"
+                        on_press:
+                            root.add_w()
 
 ScreenManager:
+
     MainScreen:
         name: 'main_screen'
+
     InfoScreen:
         name: 'info_screen' 
+
     SettingsScreen:
         name: 'settings_screen'
+
+    IncomeScreen:
+        name: 'income_screen'
+
+    ExpenseScreen:
+        name: 'expense_screen'
