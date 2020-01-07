@@ -4,12 +4,6 @@
     size_hint: .9,.5
     pos_hint: {"center_x": .5}
 
-<UpMainBt@MDRaisedButton>
-    size_hint: .1,.33
-    elevation_normal: 2
-    opposite_colors: True
-    pos_hint: {"top": 1}
-
 <MyToolBar@MDToolbar>
     md_bg_color: app.theme_cls.primary_color
 
@@ -17,6 +11,7 @@
     income: income
     expense: expense
     balance: balance
+    state_text: state_text
 
     BoxLayout:
         orientation: 'vertical'
@@ -31,18 +26,49 @@
             size_hint: 1,1
 
             BoxLayout:
-                padding: 20,20,20,0
-                spacing: 20
+                orientation: 'vertical'
+                canvas.before:
+                    Color:
+                        rgba: app.theme_cls.primary_color
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
 
-                UpMainBt:
-                    text: "Day"
+                size_hint_y: .2
 
-                UpMainBt:
-                    text: "Month"
+                BoxLayout:
 
-                UpMainBt:
-                    text: "Year"
+                    MainBt:
+                        elevation_normal: 0
+                        opposite_colors: False
+                        size_hint: .5,0
+                        text: "Day"
+                        on_press:
+                            root.state_day()
 
+                    MainBt:
+                        elevation_normal: 0
+                        opposite_colors: False
+                        size_hint: .5,0
+                        text: "Month"
+                        on_press:
+                            root.state_month()
+
+                    MainBt:
+                        elevation_normal: 0
+                        opposite_colors: False
+                        size_hint: .5,0
+                        text: "Year"
+                        on_press:
+                            root.state_year()
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: .4
+                MDLabel:
+                    id: state_text
+                    text: 'Day info:'
+                    halign:'center'
+                    valign:'center'
             GridLayout:
                 cols:2
 
@@ -89,13 +115,14 @@
                         root.manager.transition.duration = .3
                         root.manager.current = 'income_screen'
 <InfoItems>:
-    md_bg_color: app.theme_cls.primary_color
+
     canvas.before:
         Color:
-            rgba: .1, .1, .1, 1
+            rgba: app.theme_cls.primary_color
         Line:
             width: 1
             rectangle: self.x-10, self.y, self.width+20, self.height
+
 <InfoScreen>:
     scroll: scroll
 
@@ -106,14 +133,55 @@
             title: "Full info"
             right_action_items: [['keyboard-backspace', lambda x: root.back_to_main_menu()]]
 
+        BoxLayout:
+            orientation: 'vertical'
+            canvas.before:
+                Color:
+                    rgba: app.theme_cls.primary_color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            size_hint_y: .1
+
+            BoxLayout:
+
+                MainBt:
+                    elevation_normal: 0
+                    opposite_colors: False
+                    size_hint: .5,0
+                    text: "Expense"
+                    on_press:
+                        root.info_tabs('add_waste','Expense day info:')
+
+                MainBt:
+                    elevation_normal: 0
+                    opposite_colors: False
+                    size_hint: .5,0
+                    text: "Income"
+                    on_press:
+                        root.info_tabs('add_new_money','Income day info:')
+
+        BoxLayout:
+            size_hint_y: .1
+            orientation: 'vertical'
+            padding: 0, 0, 0, 10
+
+            MDLabel:
+                id: info_text
+                size_hint_y: .1
+                text: 'Expense day info:'
+                halign:'center'
+
         ScrollView:
-            
+
             BoxLayout:
                 padding: 15,15,15,15
                 id: scroll
                 size_hint_y: None
                 height: sum(x.height * 1.5 for x in self.children)
                 orientation: 'vertical'
+
 
 <SettingsScreen>:
 
@@ -125,10 +193,19 @@
             right_action_items: [['keyboard-backspace', lambda x: root.back_to_main_menu()]]
 
         BoxLayout:
+            orientation: 'vertical'
 
             MDLabel:
-                text: 'pass'
+                size_hint_y: .1
+                text: 'Warning it will clear all database:'
                 halign:'center'
+
+            MainBt:
+                id: clear_bt
+                size_hint: .5,0
+                text: "Clear database"
+                on_press:
+                    root.clear_database()
 
 <IncomeScreen>:
     text_input_sum: text_input_sum
@@ -236,19 +313,22 @@
                         on_press:
                             root.add_w()
 
-ScreenManager:
 
-    MainScreen:
-        name: 'main_screen'
+MainScreenManager:
+    screen_manager: screen_manager
+    ScreenManager:
+        id: screen_manager
+        MainScreen:
+            name: 'main_screen'
 
-    InfoScreen:
-        name: 'info_screen' 
+        InfoScreen:
+            name: 'info_screen' 
 
-    SettingsScreen:
-        name: 'settings_screen'
+        SettingsScreen:
+            name: 'settings_screen'
 
-    IncomeScreen:
-        name: 'income_screen'
+        IncomeScreen:
+            name: 'income_screen'
 
-    ExpenseScreen:
-        name: 'expense_screen'
+        ExpenseScreen:
+            name: 'expense_screen'
