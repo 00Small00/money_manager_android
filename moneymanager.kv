@@ -42,7 +42,7 @@
                         elevation_normal: 0
                         opposite_colors: False
                         size_hint: .5,0
-                        text: "Day"
+                        text: "DAY"
                         on_press:
                             root.state_day()
 
@@ -50,7 +50,7 @@
                         elevation_normal: 0
                         opposite_colors: False
                         size_hint: .5,0
-                        text: "Month"
+                        text: "MONTH"
                         on_press:
                             root.state_month()
 
@@ -58,40 +58,132 @@
                         elevation_normal: 0
                         opposite_colors: False
                         size_hint: .5,0
-                        text: "Year"
+                        text: "YEAR"
                         on_press:
                             root.state_year()
+
             BoxLayout:
                 orientation: 'vertical'
                 size_hint_y: .4
+
                 MDLabel:
                     id: state_text
-                    text: 'Day info:'
+                    text: 'DAY INFO:'
                     halign:'center'
                     valign:'center'
+
             GridLayout:
                 cols:2
+                BoxLayout:
+                    orientation: 'vertical'
+                    canvas.before:
+                        Color:
+                            rgba: app.theme_cls.primary_color[0],app.theme_cls.primary_color[1],app.theme_cls.primary_color[2],.85
+                        RoundedRectangle:
+                            radius:[10, 10, 10, 10]
+                            pos: self.pos[0]+20,self.pos[1]+20
+                            size: self.size[0]-40, self.size[1]-40
 
-                MDLabel:
-                    id: expense
-                    text: ''
-                    halign:'center'
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        size_hint_y: .01
 
-                MDLabel:
-                    id: income
-                    text: ''
-                    halign:'center'
+                        BoxLayout:
+                            padding: 30, -40
+
+                            MDLabel:
+                                text: 'Expense'
+                                size_hint: .3, .1 
+                                color: 1,1,1,1
+
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+
+                        MDLabel:
+                            id: expense
+                            text: ''
+                            halign:'center'
+                            color: 1,1,1,1
+                            font_size: dp(20)
+
+                BoxLayout:
+                    orientation: 'vertical'
+                    canvas.before:
+                        Color:
+                            rgba: app.theme_cls.primary_color[0],app.theme_cls.primary_color[1],app.theme_cls.primary_color[2],.85
+                        RoundedRectangle:
+                            radius:[10, 10, 10, 10]
+                            pos: self.pos[0]+20,self.pos[1]+20
+                            size: self.size[0]-40, self.size[1]-40
+
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        size_hint_y: .01
+
+                        BoxLayout:
+                            padding: 30, -40
+
+                            MDLabel:
+                                text: 'Income'
+                                size_hint: .3, .1 
+                                color: 1,1,1,1
+
+                    AnchorLayout:
+                        anchor_x: 'center'
+                        anchor_y: 'center'
+                        MDLabel:
+                            id: income
+                            text: ''
+                            halign:'center'
+                            color: 1,1,1,1
+                            font_size: dp(20)
 
             BoxLayout:
                 orientation: 'vertical'
+                canvas.before:
+                    Color:
+                        rgba: app.theme_cls.primary_color[0],app.theme_cls.primary_color[1],app.theme_cls.primary_color[2],.85
+                    RoundedRectangle:
+                        radius:[10, 10, 10, 10]
+                        pos: self.pos[0]+20,self.pos[1]+20
+                        size: self.size[0]-40, self.size[1]-40
 
-                MDLabel:
-                    id: balance
-                    text: ''
-                    halign:'center'
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+                    size_hint_y: .01
 
+                    BoxLayout:
+                        padding: 30, -40
+
+                        MDLabel:
+                            text: 'Balance'
+                            size_hint: .3, .1 
+                            color: 1,1,1,1
+
+                AnchorLayout:
+                    anchor_x: 'center'
+                    anchor_y: 'center'
+
+                    MDLabel:
+                        id: balance
+                        text: ''
+                        halign:'center'
+                        size_hint: .5, .5 
+                        font_size: dp(30)
+                        color: 1,1,1,1
+
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: .3
+                padding: 20,0,20,0
+                spacing: 20
                 MainBt:
-                    text: "Full info"
+                    size_hint: 1,1
+                    text: "FULL INFO"
                     on_press:
                         root.manager.transition.direction = 'up'
                         root.manager.transition.duration = .3
@@ -102,26 +194,31 @@
                 spacing: 20
 
                 MainBt:
-                    text: "Expense"
+                    text: "-"
+                    font_size: '60sp'
                     on_press:
                         root.manager.transition.direction = 'up'
                         root.manager.transition.duration = .3
                         root.manager.current = 'expense_screen'
 
                 MainBt:
-                    text: "Income"
+                    text: "+"
+                    font_size: '40sp'
                     on_press:
                         root.manager.transition.direction = 'up'
                         root.manager.transition.duration = .3
                         root.manager.current = 'income_screen'
 <InfoItems>:
-
+    theme_text_color: 'Custom'
+    text_color: [1,1,1,1]
+    
     canvas.before:
         Color:
-            rgba: app.theme_cls.primary_color
-        Line:
-            width: 1
-            rectangle: self.x-10, self.y, self.width+20, self.height
+            rgba: app.theme_cls.primary_color[0],app.theme_cls.primary_color[1],app.theme_cls.primary_color[2],.85
+        RoundedRectangle:
+            radius:[5, 5, 5, 5]
+            pos: self.pos[0],self.pos[1]
+            size: self.size[0], self.size[1]
 
 <InfoScreen>:
     scroll: scroll
@@ -150,17 +247,17 @@
                     elevation_normal: 0
                     opposite_colors: False
                     size_hint: .5,0
-                    text: "Expense"
+                    text: "EXPENSE"
                     on_press:
-                        root.info_tabs('add_waste','Expense day info:')
+                        root.info_tabs('add_waste','EXPENSE DAY INFO:')
 
                 MainBt:
                     elevation_normal: 0
                     opposite_colors: False
                     size_hint: .5,0
-                    text: "Income"
+                    text: "INCOME"
                     on_press:
-                        root.info_tabs('add_new_money','Income day info:')
+                        root.info_tabs('add_new_money','INCOME DAY INFO:')
 
         BoxLayout:
             size_hint_y: .1
@@ -177,6 +274,7 @@
 
             BoxLayout:
                 padding: 15,15,15,15
+                spacing: 10
                 id: scroll
                 size_hint_y: None
                 height: sum(x.height * 1.5 for x in self.children)
@@ -224,29 +322,29 @@
             orientation: 'vertical'
 
             BoxLayout:
-                size_hint_y: .7
+                #size_hint_y: .4
                 orientation: 'vertical'
 
                 MDLabel:
                     size_hint_y: .1
-                    text: 'Enter income sum:'
+                    text: 'ENTER INCOME SUM:'
                     halign:'center'
 
                 MDTextField:
                     id: text_input_sum
-                    hint_text: "Enter income"
+                    hint_text: "ENTER INCOME"
                     helper_text_mode: "persistent"
                     input_type: 'number'
                     input_filter: 'int'
 
                 MDLabel:
                     size_hint_y: .1
-                    text: 'Enter description:'
+                    text: 'ENTER DESCRIPTION:'
                     halign:'center'
 
                 MDTextField:
                     id: text_input_description
-                    hint_text: "Enter description"
+                    hint_text: "ENTER DESCRIPTION"
                     helper_text_mode: "persistent"
 
                 BoxLayout:
@@ -255,8 +353,8 @@
                     padding: 0,0,0,30
 
                     MainBt:
-                        size_hint: .5,0
-                        text: "Income"
+                        size_hint_y: 0 
+                        text: "SUBMIT"
                         on_press:
                             root.add_m()
 
@@ -282,24 +380,24 @@
 
                 MDLabel:
                     size_hint_y: .1
-                    text: 'Enter expense sum:'
+                    text: 'ENTER EXPENSE SUM:'
                     halign:'center'
 
                 MDTextField:
                     id: text_input_sum
-                    hint_text: "Enter expense"
+                    hint_text: "ENTER EXPENSE"
                     helper_text_mode: "persistent"
                     input_type: 'number'
                     input_filter: 'int'
 
                 MDLabel:
                     size_hint_y: .1
-                    text: 'Enter description:'
+                    text: 'ENTER DESCRIPTION:'
                     halign:'center'
 
                 MDTextField:
                     id: text_input_description 
-                    hint_text: "Enter description"
+                    hint_text: "ENTER DESCRIPTION"
                     helper_text_mode: "persistent"
 
                 BoxLayout:
@@ -308,8 +406,8 @@
                     padding: 0,0,0,30
 
                     MainBt:
-                        size_hint: .5,0
-                        text: "Expense"
+                        size_hint_y: 0
+                        text: "SUBMIT"
                         on_press:
                             root.add_w()
 

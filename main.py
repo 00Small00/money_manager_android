@@ -30,7 +30,7 @@ class ScreensOptions:
     def enter_income_expense(self):
         main_scr = self.manager.get_screen('main_screen')
         current_money = App.get_current_money()
-        main_scr.ids.balance.text = 'Balance: ' + str(current_money)
+        main_scr.ids.balance.text = str(current_money) + ' UAH'
         self.text_input_sum.text = ''
         self.text_input_description.text = ''
         self.back_to_main_menu()
@@ -56,9 +56,9 @@ class MainScreen(Screen):
             day_waste = App.get_all_year_waste(str(datetime.date.today())[0:4])
 
         current_money = App.get_current_money()
-        self.income.text = 'Income: ' + str(day_add)
-        self.expense.text = 'Expense: ' + str(day_waste)
-        self.balance.text = 'Balance: ' + str(current_money)
+        self.income.text = str(day_add) + ' UAH'
+        self.expense.text = str(day_waste) + ' UAH'
+        self.balance.text = str(current_money) + ' UAH'
 
     def open_settings(self):
         self.manager.transition.direction = 'left'
@@ -67,15 +67,15 @@ class MainScreen(Screen):
 
     def state_day(self):
         self.init_ui()
-        self.state_text.text = 'Day info:'
+        self.state_text.text = 'DAY INFO:'
 
     def state_month(self):
         self.init_ui(state='Month')
-        self.state_text.text = 'Month info:'
+        self.state_text.text = 'MONTH INFO:'
 
     def state_year(self):
         self.init_ui(state='Year')
-        self.state_text.text = 'Year info:'
+        self.state_text.text = 'YEAR INFO:'
 
 
 class IncomeScreen(Screen, ScreensOptions):
@@ -95,14 +95,14 @@ class IncomeScreen(Screen, ScreensOptions):
             day_waste = App.get_all_day_waste(ScreensOptions.date)
 
             main_scr = self.manager.get_screen('main_screen')
-            main_scr.ids.income.text = 'Income: ' + str(day_add)
-            main_scr.state_text.text = 'Day info:'
-            main_scr.ids.expense.text = 'Expense: ' + str(day_waste)
+            main_scr.ids.income.text = str(day_add) + ' UAH'
+            main_scr.state_text.text = 'DAY INFO:'
+            main_scr.ids.expense.text = str(day_waste) + ' UAH'
 
             inf_scr = self.manager.get_screen('info_screen')
             inf_scr.cls_widgets()
             inf_scr.init_ui(operation='add_new_money')
-            inf_scr.ids.info_text.text = 'Income day info:'
+            inf_scr.ids.info_text.text = 'INCOME DAY INFO:'
 
             self.enter_income_expense()
 
@@ -121,14 +121,14 @@ class ExpenseScreen(Screen, ScreensOptions):
             day_add = App.get_day_add_money(ScreensOptions.date)
 
             main_scr = self.manager.get_screen('main_screen')
-            main_scr.ids.expense.text = 'Expense: ' + str(day_waste)
-            main_scr.state_text.text = 'Day info:'
-            main_scr.ids.income.text = 'Income: ' + str(day_add)
+            main_scr.ids.expense.text = str(day_waste) + ' UAH'
+            main_scr.state_text.text = 'DAY INFO:'
+            main_scr.ids.income.text = str(day_add) + ' UAH'
 
             inf_scr = self.manager.get_screen('info_screen')
             inf_scr.cls_widgets()
             inf_scr.init_ui(operation='add_waste')
-            inf_scr.ids.info_text.text = 'Expense day info:'
+            inf_scr.ids.info_text.text = 'EXPENSE DAY INFO:'
 
             self.enter_income_expense()
 
